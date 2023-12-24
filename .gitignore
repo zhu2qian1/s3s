@@ -1,5 +1,6 @@
 config.txt
 *.pyc
 monitor.bash
+upload.bash
 venv/
 .vscode/
