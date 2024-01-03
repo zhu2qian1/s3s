@@ -1205,10 +1205,6 @@ def post_result(data, ismonitoring, isblackout, istestrun, overview_data=None):
 		s3s_values["agent_variables"] = {'Upload Mode': "Monitoring" if ismonitoring else "Manual"}
 		payload.update(s3s_values)
 
-		if payload["agent"][0:3] != os.path.basename(__file__)[:-3]:
-			print("Could not upload. Please contact @frozenpandaman on GitHub for assistance.")
-			sys.exit(0)
-
 		if istestrun:
 			payload["test"] = "yes"
 
