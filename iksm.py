@@ -14,7 +14,7 @@ S3S_VERSION           = "unknown"
 NSOAPP_VERSION        = "unknown"
 NSOAPP_VER_FALLBACK   = "2.8.1"
 WEB_VIEW_VERSION      = "unknown"
-WEB_VIEW_VER_FALLBACK = "6.0.0-daea5c11" # fallback for current splatnet 3 ver
+WEB_VIEW_VER_FALLBACK = "6.0.0-1249ecb9" # fallback for current splatnet 3 ver
 SPLATNET3_URL         = "https://api.lp1.av5ja.srv.nintendo.net"
 GRAPHQL_URL           = SPLATNET3_URL + "/api/graphql"
 
@@ -247,7 +247,7 @@ def get_gtoken(f_gen_url, session_token, ver):
 		'Content-Length':  '436',
 		'Accept':          'application/json',
 		'Connection':      'Keep-Alive',
-		'User-Agent':      'Dalvik/2.1.0 (Linux; U; Android 7.1.2)'
+		'User-Agent':      'Dalvik/2.1.0 (Linux; U; Android 14; Pixel 7a Build/UQ1A.240105.004)'
 	}
 
 	body = {
@@ -325,7 +325,7 @@ def get_gtoken(f_gen_url, session_token, ver):
 		'Content-Length':   str(990 + len(f)),
 		'Connection':       'Keep-Alive',
 		'Accept-Encoding':  'gzip',
-		'User-Agent':       f'com.nintendo.znca/{nsoapp_version}(Android/7.1.2)',
+		'User-Agent':       f'com.nintendo.znca/{nsoapp_version}(Android/14)',
 	}
 
 	url = "https://api-lp1.znc.srv.nintendo.net/v3/Account/Login"
@@ -368,7 +368,7 @@ def get_gtoken(f_gen_url, session_token, ver):
 		'Content-Type':     'application/json; charset=utf-8',
 		'Content-Length':   '391',
 		'Accept-Encoding':  'gzip',
-		'User-Agent':       f'com.nintendo.znca/{nsoapp_version}(Android/7.1.2)'
+		'User-Agent':       f'com.nintendo.znca/{nsoapp_version}(Android/14)'
 	}
 
 	body = {}
