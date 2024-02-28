@@ -159,7 +159,7 @@ def log_in(ver, app_user_agent, f_gen_url):
 
 	auth_code_verifier = base64.urlsafe_b64encode(os.urandom(32))
 	auth_cv_hash = hashlib.sha256()
-	auth_cv_hash.update(auth_code_verifier.replace(b"=", b""))
+	auth_cv_hash.update(auth_code_verifier.replace(b'=', b''))
 	auth_code_challenge = base64.urlsafe_b64encode(auth_cv_hash.digest())
 
 	app_head = {
@@ -179,7 +179,7 @@ def log_in(ver, app_user_agent, f_gen_url):
 		'client_id':                           '71b963c1b7b6d119',
 		'scope':                               'openid user user.birthday user.mii user.screenName',
 		'response_type':                       'session_token_code',
-		'session_token_code_challenge':        auth_code_challenge.replace(b"=", b""),
+		'session_token_code_challenge':        auth_code_challenge.replace(b'=', b''),
 		'session_token_code_challenge_method': 'S256',
 		'theme':                               'login_form'
 	}
@@ -194,17 +194,14 @@ def log_in(ver, app_user_agent, f_gen_url):
 			use_account_url = input("")
 			if use_account_url == "skip":
 				return "skip"
-			session_token_code = re.search('de=(.*)&', use_account_url)
-			return get_session_token(session_token_code.group(1), auth_code_verifier)
+			session_token_code = re.search('de=(.*)&st', use_account_url).group(1)
+			return get_session_token(session_token_code, auth_code_verifier)
 		except KeyboardInterrupt:
 			print("\nBye!")
 			sys.exit(1)
 		except AttributeError:
 			print("Malformed URL. Please try again, or press Ctrl+C to exit.")
 			print("URL:", end=' ')
-		except KeyError: # session_token not found
-			print("\nThe URL has expired. Please log out and back into your Nintendo Account and try again.")
-			sys.exit(1)
 
 
 def get_session_token(session_token_code, auth_code_verifier):
@@ -226,16 +223,21 @@ def get_session_token(session_token_code, auth_code_verifier):
 	body = {
 		'client_id':                   '71b963c1b7b6d119',
 		'session_token_code':          session_token_code,
-		'session_token_code_verifier': auth_code_verifier.replace(b"=", b"")
+		'session_token_code_verifier': auth_code_verifier.replace(b'=', b'')
 	}
 
 	url = 'https://accounts.nintendo.com/connect/1.0.0/api/session_token'
-
 	r = session.post(url, headers=app_head, data=body)
 	try:
-		s_t = json.loads(r.text)["session_token"]
+		container = json.loads(r.text)
+		s_t       = container["session_token"]
 	except json.decoder.JSONDecodeError:
 		print("Got non-JSON response from Nintendo (in api/session_token step). Please try again.")
+		sys.exit(1)
+	except KeyError:
+		print("\nThe URL has expired. Logging out & back in to your Nintendo Account and retrying may fix this.")
+		print("Error from Nintendo (in api/session_token step):")
+		print(json.dumps(container, indent=2))
 		sys.exit(1)
 
 	return s_t
