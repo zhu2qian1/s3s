@@ -1206,7 +1206,7 @@ def post_result(data, ismonitoring, isblackout, istestrun, overview_data=None):
 		payload.update(s3s_values)
 
 		if payload["agent"][0:3] != os.path.basename(__file__)[:-3]:
-			print(f'payload.agent {payload["agent"][0:3]}, path.basename {os.path.basename(__file__)[:-3]}')
+			print(f'{payload["agent"][0:3]=}; {os.path.basename(__file__)[:-3]=}')
 			# sys.exit(0)
 
 		if istestrun:
